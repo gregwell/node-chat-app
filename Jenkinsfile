@@ -1,18 +1,20 @@
 pipeline {
 
-    agent any
-    stages {
-        
-        stage('Test') {
-            steps {
-                echo 'Testing...'
-		        sh 'npm install'
-                sh 'npm run test'
-            }
-        }
-        
+  agent any
+  stages {
+      
+    stage('Build') {
+      steps {
+        sh 'npm install'
+      }
     }
-    
+
+    stage('Test') {
+      steps {
+        sh 'npm test'
+      }
+    }
+  }
     post {
     
     	always {
