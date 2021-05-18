@@ -1,17 +1,17 @@
 pipeline {
 
-    agent {
-        docker {
-            image 'node:latest' 
-            args '-p 3000:3000' 
-        }
+  agent {
+    docker {
+      image 'node:latest' 
+      args '-p 3000:3000' 
     }
-    environment {
-        CI = 'true' 
-    }
+  }
+  
+  environment {
+    CI = 'true' 
+  }
 
   stages {
-
     stage('Build') {
       steps {
         sh "npm install"
@@ -40,6 +40,7 @@ pipeline {
             echo 'Tests failure!'
             slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
           }
+        }
       }
     }
   }
