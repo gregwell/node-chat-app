@@ -14,31 +14,33 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'ddddd'
         sh "npm install"
+        post {
+          success {
+            echo 'Build success!'
+            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          }
+          failure {
+            echo 'Build failure!'
+            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          }
+        } 
       }
     }
 
     stage('Test') {
       steps {
         sh 'npm test'
+        post {
+          success {
+            echo 'Tests passed!'
+            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          }
+          failure {
+            echo 'Tests failure!'
+            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+          }
       }
     }
   }
-    post {
-    
-    	always {
-    	    echo 'Finished!'
-    	}
-    	
-    	success {
-            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-            echo 'Success!'
-    	}
-    	
-        failure {
-            echo 'Failure!'
-            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-        }
-    }
 }
