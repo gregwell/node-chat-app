@@ -14,14 +14,13 @@ pipeline {
 
     stage('Build') {
       steps {
-        slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        sh 'ddddd'
         sh "npm install"
       }
     }
 
     stage('Test') {
       steps {
-        slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         sh 'npm test'
       }
     }
