@@ -43,5 +43,23 @@ pipeline {
         }
       }
     }
+
+    stage('Deploy') { 
+            steps {
+              echo 'Deploying!'
+              sh 'docker build -t deploy -f Dockerfile-deploy .'
+            }
+            post {
+        	failure {
+        		echo 'Deployment failure'
+            slackSend (color: '#00FF00', message: "Deployment failure: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        	}
+        	success {
+            echo 'Deployment succesful!'
+            slackSend (color: '#00FF00', message: "Deployment sucesful: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        	}
+    		}
+        }
+
   }
 }
